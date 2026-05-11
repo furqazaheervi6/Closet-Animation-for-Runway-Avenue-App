@@ -6,11 +6,11 @@ An interactive animation prototype demonstrating the **Upload Clothes to Closet*
 
 ---
 
-## What This Is
+## Information
 
 This is a single-file HTML/CSS/JS animation that brings to life the moment a user uploads a clothing item to their digital wardrobe. It covers the full 3-phase flow:
 
-| Phase | What Happens |
+| Phase | What Happens....? |
 |---|---|
 | **1 — Upload** | Garment card rises from the drop zone with a scanning light effect |
 | **2 — Detect** | Card flies across the screen toward the closet rod |
@@ -56,7 +56,4 @@ open index.html
 ├── index.html   # All HTML + CSS + JS in one file
 └── README.md    # This file
 ```
-
 ---
-
-*Runway Avenue · Graphic Design Intern — Task 1*
