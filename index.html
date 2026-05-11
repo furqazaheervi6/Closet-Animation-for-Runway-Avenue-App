@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Runway Avenue – Upload to Closet</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&f[]=satoshi@300,400,500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --text-xs:clamp(0.75rem,0.7rem + 0.25vw,0.875rem);
+      --text-sm:clamp(0.875rem,0.8rem + 0.35vw,1rem);
+      --text-base:clamp(1rem,0.95rem + 0.25vw,1.125rem);
+      --text-lg:clamp(1.125rem,1rem + 0.75vw,1.5rem);
+      --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+      --text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
+      --sp1:.25rem;--sp2:.5rem;--sp3:.75rem;--sp4:1rem;--sp5:1.25rem;--sp6:1.5rem;
+      --sp8:2rem;--sp10:2.5rem;--sp12:3rem;--sp16:4rem;
+      --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;--r-xl:1rem;--r-2xl:1.5rem;--r-full:9999px;
+      --tr:180ms cubic-bezier(0.16,1,0.3,1);
+      --fd:'Cabinet Grotesk','Helvetica Neue',sans-serif;
+      --fb:'Satoshi','Inter',sans-serif;
+    }
+    [data-theme="dark"]{
+      --bg:#0e0d0c;--sf:#141312;--sf2:#1a1917;--sfo:#201f1c;--sfd:#2a2926;
+      --dv:#2e2c29;--bd:#3a3835;
+      --tx:#e8e6e2;--txm:#8a8884;--txf:#4e4c4a;--txi:#111110;
+      --pr:#c9a96e;--prh:#e0c48a;--prhl:#2a2318;
+      --shsm:0 1px 2px oklch(0 0 0/.3);
+      --shmd:0 4px 16px oklch(0 0 0/.4);
+      --shlg:0 16px 48px oklch(0 0 0/.55);
+      --shgw:0 0 40px oklch(0.7 0.1 70/.15);
+    }
+    [data-theme="light"]{
+      --bg:#faf9f6;--sf:#f5f4f0;--sf2:#efede8;--sfo:#e8e5de;--sfd:#ddd9d1;
+      --dv:#d4d0c8;--bd:#c8c4bb;
+      --tx:#1a1816;--txm:#6b6860;--txf:#aaa89f;--txi:#f5f4f0;
+      --pr:#9a7440;--prh:#7d5e30;--prhl:#f0e8d8;
+      --shsm:0 1px 2px oklch(0.2 0.01 80/.06);
+      --shmd:0 4px 12px oklch(0.2 0.01 80/.08);
+      --shlg:0 12px 32px oklch(0.2 0.01 80/.12);
+      --shgw:0 0 32px oklch(0.6 0.1 70/.1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+    body{min-height:100dvh;font-family:var(--fb);font-size:var(--text-base);color:var(--tx);background:var(--bg);overflow-x:hidden}
+    img{display:block;max-width:100%}
+    button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
+    :focus-visible{outline:2px solid var(--pr);outline-offset:3px;border-radius:var(--r-sm)}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+    .page{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100dvh;padding:var(--sp8) var(--sp4)}
+    .header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:var(--sp4) var(--sp8);background:color-mix(in oklch,var(--bg) 88%,transparent);backdrop-filter:blur(16px);border-bottom:1px solid var(--dv)}
+    .logo{display:flex;align-items:center;gap:var(--sp3);font-family:var(--fd);font-weight:800;font-size:var(--text-lg);letter-spacing:-.02em;color:var(--tx);text-decoration:none}
+    .logo-mark{width:32px;height:32px;flex-shrink:0}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;color:var(--txm);transition:background var(--tr),color var(--tr)}
+    .theme-toggle:hover{background:var(--sfo);color:var(--tx)}
+    .sec-label{font-size:var(--text-xs);font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--pr);margin-bottom:var(--sp3)}
+    .sec-title{font-family:var(--fd);font-size:var(--text-2xl);font-weight:800;letter-spacing:-.03em;line-height:1.05;color:var(--tx);margin-bottom:var(--sp4)}
+    .sec-sub{font-size:var(--text-sm);color:var(--txm);max-width:42ch;line-height:1.7;margin-bottom:var(--sp10)}
+    .stage{width:100%;max-width:820px;text-align:center}
+    .closet-scene{position:relative;width:100%;aspect-ratio:16/9;max-height:460px;border-radius:var(--r-2xl);background:var(--sf);border:1px solid var(--bd);box-shadow:var(--shlg),var(--shgw);overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .closet-scene::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0px,transparent 48px,rgba(255,255,255,.015) 48px,rgba(255,255,255,.015) 50px),repeating-linear-gradient(180deg,transparent 0px,transparent 96px,rgba(255,255,255,.01) 96px,rgba(255,255,255,.01) 98px)}
+    .closet-rod{position:absolute;top:28%;left:8%;right:8%;height:6px;background:linear-gradient(180deg,var(--sfd) 0%,var(--bd) 50%,var(--sfo) 100%);border-radius:var(--r-full);box-shadow:0 2px 8px oklch(0 0 0/.3),inset 0 1px 0 rgba(255,255,255,.1);z-index:5}
+    .closet-rod::before,.closet-rod::after{content:'';position:absolute;top:-12px;width:14px;height:20px;background:var(--sfd);border-radius:var(--r-sm) var(--r-sm) 0 0;border:1px solid var(--bd)}
+    .closet-rod::before{left:10%}.closet-rod::after{right:10%}
+    .closet-shelf{position:absolute;bottom:14%;left:5%;right:5%;height:8px;background:linear-gradient(180deg,var(--sfd) 0%,var(--sfo) 100%);border-radius:var(--r-sm);box-shadow:0 4px 12px oklch(0 0 0/.25),inset 0 1px 0 rgba(255,255,255,.08);z-index:5}
+    .hangers-wrap{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:flex-start;justify-content:center;padding-top:16%;z-index:6}
+    .hanger-slot{position:relative;width:80px;display:flex;flex-direction:column;align-items:center}
+    .hanger-hook{width:48px;height:36px;flex-shrink:0}
+    .hanger-hook path{stroke:var(--bd);stroke-width:2.5;fill:none;stroke-linecap:round}
+    .garment{width:64px;border-radius:var(--r-lg);box-shadow:var(--shmd);overflow:hidden;transform-origin:top center;position:relative}
+    .garment-body{width:100%;aspect-ratio:2/3;border-radius:var(--r-md);position:relative;overflow:hidden}
+    .garment-body::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0px,transparent 4px,rgba(255,255,255,.04) 4px,rgba(255,255,255,.04) 5px)}
+    .gtag{position:absolute;bottom:6px;right:4px;width:12px;height:16px;background:rgba(255,255,255,.8);border-radius:2px}
+    .g-navy{background:linear-gradient(160deg,#1a2744 0%,#2d3f6e 100%)}
+    .g-cream{background:linear-gradient(160deg,#e8dcc8 0%,#d4c4a8 100%)}
+    .g-black{background:linear-gradient(160deg,#1c1c1c 0%,#2e2e2e 100%)}
+    .g-blush{background:linear-gradient(160deg,#d4a0a0 0%,#c47878 100%)}
+    .g-sage{background:linear-gradient(160deg,#8aaa8a 0%,#6e8e6e 100%)}
+    .g-caramel{background:linear-gradient(160deg,#b8803c 0%,#9a6428 100%)}
+    .g-charcoal{background:linear-gradient(160deg,#3c3c3c 0%,#2a2a2a 100%)}
+    .garment.is-hanging{animation:swing 5s ease-in-out infinite}
+    .garment.is-hanging:nth-child(odd){animation-delay:-1.2s}
+    .garment.is-hanging:nth-child(even){animation-delay:-2.7s}
+    @keyframes swing{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg)}}
+    .upload-card{position:absolute;width:64px;border-radius:var(--r-lg);box-shadow:var(--shlg);overflow:hidden;transform-origin:top center;z-index:20;pointer-events:none;opacity:0}
+    .upload-card .garment-body{width:100%;aspect-ratio:2/3}
+    .sparkle-wrap{position:absolute;inset:0;pointer-events:none;z-index:30}
+    .sparkle{position:absolute;width:6px;height:6px;border-radius:var(--r-full);background:var(--pr);opacity:0}
+    .upload-zone{margin-top:var(--sp6);border:2px dashed var(--bd);border-radius:var(--r-xl);padding:var(--sp8) var(--sp6);text-align:center;cursor:pointer;position:relative;background:var(--sf);transition:border-color var(--tr),background var(--tr),box-shadow var(--tr);overflow:hidden}
+    .upload-zone:hover,.upload-zone.drag{border-color:var(--pr);background:var(--prhl);box-shadow:0 0 0 4px rgba(201,169,110,.08)}
+    .upload-zone:active{transform:scale(.99)}
+    .upload-zone::after{content:'';position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,var(--pr) 50%,transparent 100%);top:0;opacity:0;transform:translateY(-100%)}
+    .upload-zone.scanning::after{animation:scan 1.2s cubic-bezier(.4,0,.6,1) forwards}
+    @keyframes scan{0%{opacity:0;transform:translateY(0)}20%{opacity:.8}80%{opacity:.8}100%{opacity:0;transform:translateY(200px)}}
+    .up-icon{width:48px;height:48px;margin:0 auto var(--sp3);color:var(--txm);transition:color var(--tr),transform var(--tr)}
+    .upload-zone:hover .up-icon,.upload-zone.drag .up-icon{color:var(--pr);transform:translateY(-3px)}
+    .up-label{font-size:var(--text-sm);font-weight:600;color:var(--tx);margin-bottom:var(--sp1);font-family:var(--fd)}
+    .up-hint{font-size:var(--text-xs);color:var(--txm)}
+    .up-hint span{color:var(--pr);font-weight:500}
+    .btn-p{display:inline-flex;align-items:center;gap:var(--sp2);padding:var(--sp3) var(--sp8);background:var(--pr);color:var(--txi);border-radius:var(--r-full);font-family:var(--fd);font-weight:700;font-size:var(--text-sm);letter-spacing:.02em;box-shadow:var(--shmd);transition:background var(--tr),transform var(--tr),box-shadow var(--tr);margin-top:var(--sp6)}
+    .btn-p:hover{background:var(--prh);transform:translateY(-2px);box-shadow:var(--shlg)}
+    .btn-p:active{transform:translateY(0)}
+    [data-theme="light"] .btn-p{color:#faf9f6}
+    .steps{display:flex;align-items:center;gap:var(--sp2);justify-content:center;margin-top:var(--sp5)}
+    .pill{display:flex;align-items:center;gap:var(--sp2);padding:var(--sp1) var(--sp3);border-radius:var(--r-full);font-size:var(--text-xs);font-weight:500;background:var(--sf2);color:var(--txm);border:1px solid var(--bd);transition:background var(--tr),color var(--tr),border-color var(--tr)}
+    .pill.on,.pill.done{background:var(--prhl);color:var(--pr);border-color:rgba(201,169,110,.3)}
+    .dot{width:6px;height:6px;border-radius:var(--r-full);background:currentColor;flex-shrink:0}
+    .conn{width:24px;height:1px;background:var(--bd)}
+    .confetti-p{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;z-index:999;opacity:0}
+    .toast{position:fixed;bottom:var(--sp8);left:50%;transform:translateX(-50%) translateY(80px);background:var(--sf2);border:1px solid var(--bd);border-radius:var(--r-xl);padding:var(--sp3) var(--sp6);font-size:var(--text-sm);font-weight:500;color:var(--tx);box-shadow:var(--shlg);z-index:500;display:flex;align-items:center;gap:var(--sp3);opacity:0;transition:transform .4s cubic-bezier(0.16,1,0.3,1),opacity .4s;white-space:nowrap}
+    .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+    .ti{color:var(--pr);flex-shrink:0}
+    @media(max-width:600px){.hanger-slot{width:56px}.garment,.upload-card{width:46px}.hanger-hook{width:36px;height:28px}.sec-title{font-size:var(--text-xl)}}
+  </style>
+</head>
+<body>
+<header class="header">
+  <a href="#" class="logo" aria-label="Runway Avenue">
+    <svg class="logo-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <rect width="32" height="32" rx="8" fill="var(--pr)" opacity="0.15"/>
+      <path d="M16 4C16 4 19 4 19 7C19 9.5 16.5 10 16.5 10L22 10L22 28M16.5 10L22 28" stroke="var(--pr)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M10 10L10 28" stroke="var(--pr)" stroke-width="2" stroke-linecap="round"/>
+      <path d="M9 4C12 4 16 4 16 7C16 8.5 14.5 10 12.5 10L10 10" stroke="var(--pr)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    Runway Avenue
+  </a>
+  <button class="theme-toggle" data-theme-toggle aria-label="Switch to light mode">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</header>
+
+<main class="page">
+  <div class="stage">
+    <p class="sec-label">Feature Animation &mdash; Task 1</p>
+    <h1 class="sec-title">Upload to Your Closet</h1>
+    <p class="sec-sub">Drag, drop, and watch your pieces find their place. Every item you add is instantly organized into your personal digital wardrobe.</p>
+
+    <div class="closet-scene" id="cs" role="img" aria-label="Animated digital closet">
+      <div class="closet-rod"></div>
+      <div class="closet-shelf"></div>
+      <div class="hangers-wrap" id="hw"></div>
+      <div class="sparkle-wrap" id="sw"></div>
+      <div class="upload-card" id="uc">
+        <div class="garment-body g-blush"><div class="gtag"></div></div>
+      </div>
+    </div>
+
+    <div class="upload-zone" id="uz" role="button" tabindex="0" aria-label="Upload clothing item">
+      <svg class="up-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M24 32V16M17 23l7-7 7 7"/><path d="M8 36c0-4 2-8 8-9a10 10 0 0 1 16 0c6 1 8 5 8 9"/>
+        <rect x="4" y="36" width="40" height="8" rx="4"/>
+      </svg>
+      <p class="up-label">Drop your item here</p>
+      <p class="up-hint">JPEG, PNG, HEIC &nbsp;&middot;&nbsp; <span>Browse files</span></p>
+    </div>
+
+    <div class="steps">
+      <div class="pill on" id="s1"><span class="dot"></span> Upload</div>
+      <div class="conn"></div>
+      <div class="pill" id="s2"><span class="dot"></span> Detect</div>
+      <div class="conn"></div>
+      <div class="pill" id="s3"><span class="dot"></span> Hang</div>
+    </div>
+
+    <button class="btn-p" id="db" aria-label="Preview animation">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polygon points="5,3 19,12 5,21"/></svg>
+      Preview Animation
+    </button>
+  </div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg class="ti" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20,6 9,17 4,12"/></svg>
+  <span id="tm">Item added to your closet!</span>
+</div>
+
+<script>
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d='dark';r.setAttribute('data-theme',d);
+  if(!t)return;
+  t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';r.setAttribute('data-theme',d);
+    t.setAttribute('aria-label','Switch to '+(d==='dark'?'light':'dark')+' mode');
+    t.innerHTML=d==='dark'
+      ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+  });
+})();
+
+const COLORS=['g-navy','g-cream','g-black','g-sage','g-caramel','g-charcoal'];
+const LABELS=['Navy blazer','Cream blouse','Black dress','Sage coat','Caramel jacket','Charcoal trousers'];
+const hw=document.getElementById('hw');
+function mkHook(){return'<svg class="hanger-hook" viewBox="0 0 48 36" aria-hidden="true"><path d="M24 4C24 4 28 4 28 8C28 12 24 13 24 13L4 28C4 28 2 30 2 32L46 32C46 32 46 30 44 28L24 13"/></svg>';}
+function mkSlot(col,lbl){
+  const s=document.createElement('div');s.className='hanger-slot';
+  s.innerHTML=mkHook()+`<div class="garment is-hanging" aria-label="${lbl}"><div class="garment-body ${col}"><div class="gtag"></div></div></div>`;
+  return s;
+}
+COLORS.forEach((c,i)=>hw.appendChild(mkSlot(c,LABELS[i])));
+
+let busy=false;
+const UPC=['g-blush','g-navy','g-cream','g-sage','g-caramel','g-charcoal','g-black'];
+let ci=0;
+const cs=document.getElementById('cs'),uc=document.getElementById('uc'),uz=document.getElementById('uz');
+const db=document.getElementById('db'),s1=document.getElementById('s1'),s2=document.getElementById('s2'),s3=document.getElementById('s3');
+const sw=document.getElementById('sw'),toast=document.getElementById('toast'),tm=document.getElementById('tm');
+
+function step(n){[s1,s2,s3].forEach((s,i)=>{s.classList.remove('on','done');if(i<n-1)s.classList.add('done');if(i===n-1)s.classList.add('on');})} 
+function showToast(msg){tm.textContent=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2800);}
+function sparkles(x,y){
+  for(let i=0;i<10;i++){
+    const el=document.createElement('div');el.className='sparkle';
+    const a=(i/10)*Math.PI*2,d=18+Math.random()*28;
+    const tx=Math.cos(a)*d,ty=Math.sin(a)*d;
+    el.style.cssText=`left:${x}px;top:${y}px;width:${4+Math.random()*5}px;height:${el.style.width}`;
+    sw.appendChild(el);
+    el.animate([{opacity:1,transform:'translate(0,0) scale(1)'},{opacity:0,transform:`translate(${tx}px,${ty}px) scale(0)`}],
+      {duration:550+Math.random()*300,easing:'cubic-bezier(0.16,1,0.3,1)',fill:'forwards'}).finished.then(()=>el.remove());
+  }
+}
+function confetti(){
+  const cols=['#c9a96e','#e0c48a','#8aaa8a','#d4a0a0','#6e8e6e'];
+  for(let i=0;i<22;i++){
+    const p=document.createElement('div');p.className='confetti-p';
+    p.style.cssText=`background:${cols[i%cols.length]};left:${20+Math.random()*60}vw;top:-20px;border-radius:${Math.random()>.5?'50%':'2px'}`;
+    document.body.appendChild(p);
+    const dr=(Math.random()-.5)*180,sp=(Math.random()-.5)*720;
+    p.animate([{opacity:1,transform:'translateY(0) rotate(0deg)'},{opacity:0,transform:`translateY(100vh) translateX(${dr}px) rotate(${sp}deg)`}],
+      {duration:1400+Math.random()*800,delay:Math.random()*300,easing:'cubic-bezier(0.22,0.61,0.36,1)',fill:'forwards'}).finished.then(()=>p.remove());
+  }
+}
+function wait(ms){return new Promise(r=>setTimeout(r,ms));}
+function target(){
+  const slots=hw.querySelectorAll('.hanger-slot');
+  const sr=cs.getBoundingClientRect(),lr=slots[slots.length-1].getBoundingClientRect();
+  return{x:lr.left+lr.width/2-sr.left,y:lr.top+lr.height*.3-sr.top};
+}
+
+async function run(){
+  if(busy)return;busy=true;
+  const col=UPC[ci%UPC.length];ci++;
+  uc.querySelector('.garment-body').className=`garment-body ${col}`;
+  const sr=cs.getBoundingClientRect();
+  const sx=sr.width/2-32;
+  uc.style.cssText=`left:${sx}px;bottom:0;top:auto;transform:'';opacity:0`;
+  uz.classList.add('scanning');step(1);await wait(300);
+  uc.style.opacity='1';
+  uc.animate([{opacity:0,transform:'translateY(80px) scale(0.7)'},{opacity:1,transform:'translateY(-40px) scale(1)'}],
+    {duration:650,easing:'cubic-bezier(0.16,1,0.3,1)',fill:'forwards'});
+  await wait(500);step(2);uz.classList.remove('scanning');await wait(300);
+  const tg=target();
+  const sy=sr.height-160;
+  uc.style.cssText=`left:${sx}px;top:${sy}px;opacity:1`;
+  uc.animate([{transform:'translate(0,0) rotate(-4deg)'},{transform:`translate(${tg.x-sx}px,${tg.y-sy}px) rotate(0deg)`}],
+    {duration:700,easing:'cubic-bezier(0.16,1,0.3,1)',fill:'forwards'});
+  await wait(750);step(3);
+  uc.animate([{transform:`translate(${tg.x-sx}px,${tg.y-sy}px) rotate(0deg) scale(1.05)`},{transform:`translate(${tg.x-sx}px,${tg.y-sy}px) rotate(0deg) scale(1)`}],
+    {duration:400,easing:'cubic-bezier(0.34,1.56,0.64,1)',fill:'forwards'});
+  sparkles(tg.x,tg.y+20);await wait(350);
+  const ns=mkSlot(col,'New item');ns.style.opacity='0';hw.appendChild(ns);
+  ns.animate([{opacity:0},{opacity:1}],{duration:300,fill:'forwards'});
+  uc.animate([{opacity:1},{opacity:0}],{duration:200,fill:'forwards'});
+  await wait(250);confetti();showToast('Item added to your closet! ✨');
+  step(1);await wait(600);busy=false;
+}
+
+db.addEventListener('click',run);
+uz.addEventListener('click',run);
+uz.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();run();}});
+uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('drag');});
+['dragleave','drop'].forEach(ev=>uz.addEventListener(ev,e=>{e.preventDefault();uz.classList.remove('drag');if(ev==='drop')run();}));
+</script>
+</body>
+</html>
