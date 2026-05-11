@@ -1,17 +1,52 @@
 # Closet Animation — Runway Avenue App
 
-**Task 1 · Graphic Design Intern Project · v2**
+**Task 1 · Graphic Design Intern Project · v3**
 
 An interactive animation prototype for the **Upload Clothes to Closet** feature of the Runway Avenue fashion app.
 
 ---
 
-## What's New in v2
+## File Structure
 
-- 👗 **Real clothing SVG illustrations** — overcoat, blouse, trousers, wrap dress, linen shirt, denim shorts — all with gradient fills, shine overlays, and stitching details
-- 💡 **Hover tooltip cards** — hovering any item lifts it out of the closet and shows a styled card with item type, name, description, and season/style tags
-- 🪄 **Richer closet scene** — side panels, folded items on the shelf, metallic rod with wall brackets, subtle ambient glow
-- ⌨️ **Keyboard accessible** — all items reachable by Tab key, tooltips trigger on focus
+```
+/
+├── index.html          ← Main app (HTML + CSS + App module)
+└└── js/
+    ├── closet-door.js   ← Isolated closet door open/close animation
+    └── confetti.js      ← Canvas-based fireworks celebration module
+```
+
+---
+
+## Modules
+
+### `js/closet-door.js`
+Handles the 3D perspective door swing animation. Exposes:
+- `ClosetDoor.toggle()` — open if closed, close if open
+- `ClosetDoor.open()` — idempotent open
+- `ClosetDoor.close()` — idempotent close
+
+Doors swing open 85° using CSS `perspective` + `rotateY`. Closet interior fades in 380ms into the 750ms swing so clothes appear as the doors clear the frame.
+
+### `js/confetti.js` — Fireworks Edition
+Canvas-based fireworks system. Replaces the original CSS confetti-particle approach with:
+- Rising rocket shell → mid-air explosion → star particles + sparks + trailing streamers
+- **35-colour palette**: brand golds, reds, corals, purples, blues, cyans, greens, oranges, ambers, pinks, blush
+- `Confetti.burst(x, y)` — instant radial burst at viewport coords
+- `Confetti.burst(x, y, count, rocket)` — rocket that ascends and explodes at peak
+- `Confetti.rain(duration, interval)` — timed automated fireworks show
+- `Confetti.stopRain()` — halt an ongoing show
+
+---
+
+## What's New in v3
+
+- Closet door and fireworks animations extracted into isolated, reusable JS modules
+- Fireworks replace confetti: canvas rAF loop, physics-based particles, glowing trails, rocket mode
+- 35-colour fireworks palette (up from 5 original colours)
+- Collapsible sidebar for clothing categories
+- Full 3D door swing (85° perspective) fully revealing all closet contents
+- Production-refactored code: `App`, `Drag`, `Toast`, `ClosetDoor`, `Confetti` modules with unified `state` object
 
 ---
 
@@ -30,21 +65,13 @@ An interactive animation prototype for the **Upload Clothes to Closet** feature 
 
 ## How to Run
 
-Open `index.html` in any modern browser — no build tools, no server needed.
-
-```bash
-open index.html
-```
+1. Clone or download the repo
+2. Open `index.html` in any browser — no build tools or server needed
+3. The `js/` modules load automatically via `<script src="js/closet-door.js">` tags at the bottom of `index.html`
 
 ---
 
-## Brand Direction
+## Brand
 
-- **Accent:** Champagne gold (`#c9a96e`) — elevated, editorial
-- **Surfaces:** Dark walnut (dark mode) / warm ivory (light mode)
-- **Fonts:** Cabinet Grotesk (display) + Satoshi (body)
-- **Motion:** Spring easing `cubic-bezier(0.34, 1.56, 0.64, 1)` for garment hang
-
----
-
-*Runway Avenue · Graphic Design Intern — Task 1 v2*
+Palette: warm champagne gold (`#c9a96e`) on dark walnut surfaces.
+Fonts: DM Sans (headings) + Inter (body) via Google Fonts CDN.
